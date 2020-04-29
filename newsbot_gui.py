@@ -3,20 +3,22 @@ from tkinter import *
 from news_api import NewsApi
 
 
-class ChatBot:
-    def __init__(self):
+class NewsBot:
+    def __init__(self, message):
         master = Tk()
 
         master.title('News Bot')
         master.geometry('500x600')
         master.resizable(0, 0)
 
+        # Heading for NewsBot
         label = Label(
             master,
-            font=('Times New Roman', 25, 'bold'),
-            text='News Bot'
+            text='News Bot',
+            font=('Times New Roman', 25, 'bold')
         )
 
+        # Body of NewsBot
         text = Text(
             master,
             state='disabled',
@@ -25,8 +27,12 @@ class ChatBot:
             height=25,
             width=60,
         )
+        text.configure(state=NORMAL)
+        text.insert(END, message)
+        text.configure(state='disabled')
 
         reply = StringVar()
+        # Entry for manual input
         entry = Entry(
             master,
             textvariable=reply,
@@ -34,6 +40,7 @@ class ChatBot:
             width=25
         )
 
+        # Sending the query for processing
         def send_reply():
             text.configure(state=NORMAL)
             text.insert(END, '---]  ' + reply.get() + '\n')
@@ -41,12 +48,14 @@ class ChatBot:
 
             news = NewsApi.get_news(query=reply.get())
 
-            if news == Exception:
+            if news == 'Error':
                 text.configure(state=NORMAL)
                 text.insert(END, news + '\n')
+                text.configure(state='disabled')
             else:
                 print_news(news)
 
+        # NewsBot reply
         def print_news(news):
             text.configure(state=NORMAL)
             for i in range(5):
@@ -59,6 +68,7 @@ class ChatBot:
                 text.insert(END, 'Polarity=' + str(news[i][6]) + '\t' + 'Subjectivity=' + str(news[i][7]) + '\n')
                 text.insert(END, '------------------------------------------------------------\n\n')
 
+        # Button for submitting reply
         button = Button(
             master,
             text='Enter',
