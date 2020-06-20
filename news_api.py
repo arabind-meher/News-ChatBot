@@ -4,7 +4,7 @@ from newsapi import NewsApiClient
 from sentiment_analysis import AnalyzeSentiment
 
 # Getting the 'API' key from yaml file
-package = yaml.load(open('package'), Loader=yaml.FullLoader)
+package = yaml.load(open('package.yaml'), Loader=yaml.FullLoader)
 api_key = package['api']
 
 
